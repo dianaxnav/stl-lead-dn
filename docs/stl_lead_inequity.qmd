@@ -1,0 +1,47 @@
+---
+title: "stl_lead_inequity"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(janitor)
+
+```
+
+```{r}
+lead <- read_csv(here::here("data", "stl_lead.csv"), na = c (".", "missing")) |>
+  clean_names()
+```
+
+```{r}
+dim (lead)
+summary (lead)
+```
+
+```{r}
+stl_lead_prop <- dplyr::mutate(lead, prop_white = (white / total_pop * 100))
+```
+
+```{r}
+stlead <- ggplot(data = stl_lead_prop, aes(x = pct_elevated, y = prop_white, alpha = .5, color = tract_ce)) +
+  geom_point()
+
+stlead
+```
+
+```{r}
+ggsave(here::here("figs", "stlead.png"), height = 6, width = 5 )
+```
+
+```{r}
+kat <- ggplot(data = stl_lead_prop, aes(x = pct_elevated)) + 
+  geom_histogram(fill = "pink", color = "yellow")
+
+kat
+```
+
+```{r}
+ggsave(here::here("figs", "kat.png"), height = 6, width = 5)
+```
